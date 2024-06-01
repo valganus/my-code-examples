@@ -174,7 +174,7 @@ class Farmer:
 buryonka = Cow('Буренка', 0, 0)
 jessica = Sheep('Джессика', 0, 0)
 snezhok = Rabbit('Снежок')
-farmer = Farmer('Анна Дмитриевна', 100)
+farmer = Farmer(str(input()), 100)
 food = Food(0, 0, 0, 0)
 farm = Farm(0, 0, 0, 0)
 print(farmer)
