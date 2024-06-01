@@ -1,0 +1,41 @@
+import os
+import argparse
+from PIL import Image
+import pillow_avif
+
+parser = argparse.ArgumentParser()
+prog = 'myconverter_photo'
+parser.add_argument('path', help = 'путь к папке или файлу')
+parser.add_argument('from_extention', help = 'исходный формат')
+parser.add_argument('to_extention', help = 'целевой формат')
+args = parser.parse_args()
+print(args.path)
+
+def convert(path):
+    pic = Image.open(path)
+    if args.to_extention == 'ico':
+        pic.load()
+        size = (32, 32)
+        pic.thumbnail(size)
+    pic.save(f'{os.path.splitext(os.path.basename(path))[0]}.{args.to_extention}')
+    print('конвертация прошла успешно!')
+
+def myconverter_photo(path):
+    if os.path.exists(path):
+        
+        if os.path.isdir(path): # если папка
+            path_list = os.listdir(path)
+            
+            for old_path in path_list:
+                    if os.path.splitext(old_path)[1] == args.from_extention:
+                        convert(os.path.join(path, old_path))
+
+
+        else: # если файл
+            
+            convert(path)
+    
+    else:
+        print('такого пути нет!')  
+
+myconverter_photo(args.path)
