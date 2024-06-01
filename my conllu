@@ -1,0 +1,26 @@
+from conllu import parse
+
+class Conllu:
+    def __init__(self, path, res):
+        self.path = path
+        self.res = res
+        with open(self.path, 'r', encoding = 'utf8') as f:
+            texts = f.read()
+            self.res = parse(texts, fields=['id', 'form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'semslot', 'semclass'])
+
+    def semclass(self): 
+        semclasses = set()
+        res = dict()
+        for sentence in self.res:
+            for word in sentence:
+                semclasses.add((word['semclass'], word['form']))
+        semclasses_dict = dict(semclasses)
+        for sentence in self.res:
+            for semclass, word in semclasses_dict.items():
+                if word in sentence.metadata['text']:
+                    res[semclass] = sentence.metadata['text']
+
+        print(res)
+        
+conllu = Conllu('train.conllu', '') 
+conllu.semclass()
