@@ -1,0 +1,210 @@
+class Farm:
+    def __init__(self, house, field, greenhouse, corral):
+        self.house = house
+        self.field = field
+        self.greenhouse = greenhouse
+        self.corral = corral
+
+class Cow:
+    def __init__(self, name_cow, fullness_cow, milk):
+        self.name_cow = name_cow
+        self.fullness_cow = fullness_cow
+        self.milk = milk
+
+class Sheep:
+    def __init__(self, name_sheep, fullness_sheep, wool):
+        self.name_sheep = name_sheep
+        self.fullness_sheep = fullness_sheep
+        self.wool = wool
+
+class Rabbit:
+    def __init__(self, name_rabbit):
+        self.name_rabbit = name_rabbit
+
+class Food:
+    def __init__(self, hay, carrot, potato, cucumber):
+        self.hay = hay
+        self.carrot = carrot
+        self.potato = potato
+        self.cucumber = cucumber
+
+class Farmer:
+    def __init__(self, name, money):
+        self.name = name 
+        self.money = money
+    
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.name}', '{self.money}')"
+    
+    def __str__(self):
+        return f'Фермер по имени {self.name}, капитал: {self.money} монет'
+    
+    def harvest(self):
+        option = input('что бы вы хотели собрать? (картошка/огурцы)')
+        if option == 'огурцы':
+            print('вы собрали 1 кг огурцов')
+            food.cucumber += 1
+        if option == 'картошка':
+            print('вы собрали 1 кг картошки')
+            food.potato += 1
+    
+    def build(self):
+        option = input('что бы вы хотели построить? (дом/загон/поле/теплица)')
+        if option == 'дом':
+            print(f'вы построили дом. теперь вы можете в нем отдохнуть. у вас осталось {self.money - 25} монет')
+            farm.house += 1
+        elif option == 'загон':
+            print(f'вы построили загон для животных. теперь Буренке, Джессике и Снежку есть где жить. у вас осталось {self.money - 15} монет')
+            farm.corral += 1
+        elif option == 'поле':
+            print(f'вы вспахали поле. теперь вы можете выращивать картошку. у вас осталось {self.money - 10} монет')
+            farm.field += 1
+        if option == 'теплица':
+            print(f'вы построили теплицу. теперь вы можете выращивать огурцы. у вас осталось {self.money - 10} монет')
+            farm.greenhouse += 1
+
+    def buy(self):
+        option = input('что бы вы хотели купить? (сено/морковка)')
+        if option == 'сено':
+            q = int(input(f'сколько охапок сена вы хотите купить? одна стоит 5 монет. у вас есть {self.money} монет'))
+            if self.money >= q*5:
+                self.money -= q*5
+                food.hay += q
+                print(f'поздравляем с покупкой. теперь у вас {food.hay} охапок сена и {self.money} монет')
+        if option == 'морковка':
+            q = int(input(f'сколько морковок вы хотите купить? одна стоит 5 монет. у вас есть {self.money} монет'))
+            if self.money >= q*5:
+                self.money -= q*5
+                food.carrot += q
+                print(f'поздравляем с покупкой. теперь у вас {food.carrot} морковок и {self.money} монет')
+
+    def sell(self):
+        option = input('что бы вы хотели продать? (молоко/шерсть/огурцы/картошка)')
+        if option == 'молоко':
+            if buryonka.milk > 0:
+                q = int(input(f'сколько бутылок молока вы хотите продать? у вас есть {buryonka.milk}'))
+                print(f'вы продали {q} бутылок и заработали {q*10} монет')
+                buryonka.milk -= q
+                self.money += q*10
+            else:
+                print('вам нечего продавать')
+        elif option == 'шерсть':
+            if jessica.wool > 0:
+                q = int(input(f'сколько охапок шерсти вы хотите продать? у вас есть {jessica.wool}'))
+                print(f'вы продали {q} охапок и заработали {q*10} монет')
+                jessica.wool -= q
+                self.money += q*10
+            else:
+                print('вам нечего продавать')
+        elif option == 'огурцы':
+            if food.cucumber > 0:
+                q = int(input(f'сколько кг огурцов вы хотите продать? у вас есть {food.cucumber}'))
+                print(f'вы продали {q} кг и заработали {q*3} монет')
+                food.cucumber -= q
+                self.money += q*3
+            else:
+                print('вам нечего продавать')
+        elif option == 'картошка':
+            if food.potato > 0:
+                q = int(input(f'сколько кг картошки вы хотите продать? у вас есть {food.potato}'))
+                print(f'вы продали {q} кг и заработали {q*1} монет')
+                food.potato -= q
+                self.money += q*1
+            else:
+                print('вам нечего продавать')
+    
+    def info(self):
+        print(f'у вас есть\n {buryonka.milk} бутылок молока\n {jessica.wool} охапок шерсти\n {food.carrot} морковок\n {food.hay} охапок сена\n {food.potato} кг картошки\n {food.cucumber} кг огурцов\n {farm.field} поля(ей)\n {farm.greenhouse} теплиц(ы)\n {farm.corral} загона(ов) для животных\n {farm.house} дом')
+
+    def interact(self, animal):
+        if animal == buryonka:
+            option = input(f'покормить или подоить {buryonka.name_cow}?')
+            if option == 'покормить':
+                if food.hay > 0:
+                    print(f'{buryonka.name_cow} сыта! теперь можно ее подоить')
+                    food.hay -= 1
+                    buryonka.fullness_cow += 1
+                else:
+                    print('у вас закончилось сено')
+            elif option == 'подоить':
+                if buryonka.fullness_cow > 0:
+                    print(f'{buryonka.name_cow} подоена! +1 бутылка молока')
+                    buryonka.fullness_cow -= 1
+                    buryonka.milk += 1
+                else:
+                    print(f'{buryonka.name_cow} не дает молока голодной')
+        elif animal == jessica:
+            option = input(f'покормить или постричь {jessica.name_sheep}?')
+            if option == 'покормить':
+                if food.hay > 0:
+                    print(f'{jessica.name_sheep} сыта! теперь можно ее постричь')
+                    food.hay -= 1
+                    jessica.fullness_sheep += 1
+                else:
+                    print('у вас закончилось сено')
+            elif option == 'постричь':
+                if jessica.fullness_sheep > 0:
+                    print(f'{jessica.name_sheep} пострижена! +1 охапка шерсти')
+                    jessica.fullness_sheep -= 1
+                    jessica.wool += 1
+                else:
+                    print(f'{jessica.name_sheep} не дается стричься голодной')
+        else:
+            option = input('покормить или убить Снежка?')
+            if option == 'покормить':
+                if food.carrot > 0:
+                    print(f'{snezhok.name_rabbit} покормлен, и он оказался волшебным кроликом. в дар за то, что вы были добры к нему, вы получаете 10 монет!')
+                    self.money += 10
+                    food.carrot -= 1
+            elif option == 'убить':
+                print(f'{snezhok.name_rabbit} мертв. он был принцем далекой волшебной страны, и его подданные пришли отомстить. вы теряете все ресурсы')
+                self.money = 0
+                food.carrot = 0
+                food.cucumber = 0
+                food.potato = 0
+                food.hay = 0
+                buryonka.milk = 0
+                jessica.wool = 0
+                farm.field = 0
+                farm.greenhouse = 0
+                farm.corral = 0
+                farm.house = 0
+            
+            
+buryonka = Cow('Буренка', 0, 0)
+jessica = Sheep('Джессика', 0, 0)
+snezhok = Rabbit('Снежок')
+farmer = Farmer('Анна Дмитриевна', 100)
+food = Food(0, 0, 0, 0)
+farm = Farm(0, 0, 0, 0)
+print(farmer)
+
+while True:
+    answ = input('что будете делать? (урожай/построить/купить/продать/животные/информация)')
+    if answ == 'урожай':
+        print('вы решили собрать урожай')
+        farmer.harvest()
+    elif answ == 'построить':
+        print('вы решили строить')
+        farmer.build()
+    elif answ == 'купить':
+        print('вы решили купить продовольствие')
+        farmer.buy()
+    elif answ == 'животные':
+        print('вы решили взаимодействовать с животными')
+        animal = input('выберите животное: корова, овечка, кролик')
+        if animal == 'корова':
+            farmer.interact(buryonka)
+        if animal == 'овечка':
+            farmer.interact(jessica)
+        if animal == 'кролик':
+            farmer.interact(snezhok)
+    elif answ == 'продать':
+        print('вы решили продать ресурсы')
+        farmer.sell()
+    elif answ == 'информация':
+        print('вы решили узнать информацию')
+        farmer.info()
+    elif answ == 'стоп':
+        print('скорее возвращайтесь на нашу ферму!')
+        break
