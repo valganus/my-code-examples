@@ -1,0 +1,51 @@
+import re
+import pickle
+from collections import defaultdict
+
+class Phonebook:
+    def __init__(self):
+        self.book = defaultdict(list)
+    
+    def create(self): 
+        name = input('введите имя')
+        try:
+            test1 = re.fullmatch(r'([А-ЯЁа-яё]+\s[А-ЯЁа-яё]+)', name)
+            if name == test1.group():  
+                number = input('введите номер')
+                try:
+                    test2 = re.fullmatch(r'(\+?[78]\s*\d{3}\s*\d{3}\s*\d{2}\s*\d{2})', number)
+                    if number == test2.group():
+                        self.book[name] = number
+                        return self.book
+                except:
+                    print('номер введен неверно')
+        except:
+            print('имя введено неверно')
+    
+    def search(self):
+        with open('справочник.bin','rb') as f:
+            dicti = pickle.load(f)
+            print(dicti)
+            spec_name = input('введите имя')
+        if spec_name in dicti:
+            print(dicti.get(spec_name))
+        else:
+            print('такого контакта нет')
+        
+
+    def save(self):
+        with open('справочник.bin', 'wb') as f:
+            pickle.dump(self.book, f)
+
+myphonebook = Phonebook()
+
+while True:
+    question = input('найти номер, создать новую запись или сохранить справочник в файл?')
+    if question == 'найти':
+        myphonebook.search()
+    elif question == 'создать':
+        myphonebook.create()
+    elif question == 'сохранить':
+        myphonebook.save()
+    elif question == 'стоп':
+        break
