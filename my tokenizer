@@ -1,0 +1,26 @@
+import re
+
+class Token:
+    def __init__(self, form, typ):
+        self.form = form 
+        self.typ = typ 
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.form}', '{self.typ}')"
+    
+class Tokenizer:
+    def tokenize(self, raw):
+        l = re.findall(r'([А-ЯЁа-яё]+(-[А-ЯЁа-яё]+)*)|(\d+)|(\.|,|\?|!|:|;|")', raw)
+        lst = []
+        for tuple in l:
+            if tuple[0] != '':
+                lst.append(Token(tuple[0], 'слово'))
+            if tuple[2] != '':
+                lst.append(Token(tuple[2], 'число'))
+            if tuple[3] != '':
+                lst.append(Token(tuple[3], 'знак препинания'))
+        return lst
+    
+tokenizer = Tokenizer()
+raw = 'Напишите регулярное выражение, которое будет находить в тексте все слова. За слово мы считаем любую последовательность букв и дефисов, но дефисы не могут идти друг за другом и не могут находиться на границе слова (случаи вида трех- и четырехэтажный не считаем в виде исключения, зато нам подойдут черно-бело-золотой, русско-английский и проч., а вот русско--английский должно будет разделиться на 2 слова).'
+tokens = tokenizer.tokenize(raw)
+tokens
