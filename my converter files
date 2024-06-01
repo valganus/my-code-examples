@@ -1,0 +1,34 @@
+from pdfminer.high_level import extract_text
+from docx import Document 
+import os
+import argparse
+
+parser = argparse.ArgumentParser()
+prog = 'myconverter'
+parser.add_argument('path')
+args = parser.parse_args()
+print(args.path)
+
+def ffile(path):  
+    filename, extension = os.path.splitext(path)
+    if os.path.exists(path):
+        if extension == '.pdf':
+            data = extract_text(path)
+            with open(f'{filename}.txt', 'w', encoding = 'utf8') as f:
+                f.write(data)
+            print('конвертация прошла успешно!')
+        elif extension == '.docx':
+            document = Document(path)
+            res =[]
+            for p in document.paragraphs:
+                for word in p.text.split():
+                    res.append(word)
+            with open(f'{filename}.txt', 'w', encoding = 'utf8') as f:
+                f.write(str(res))
+            print('конвертация прошла успешно!')
+        else:
+            print('Расширение не подходит!')
+    else:
+        print('Такого пути нет!')
+
+ffile(args.path)
